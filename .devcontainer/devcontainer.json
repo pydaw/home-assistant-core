@@ -18,9 +18,6 @@
     "--security-opt",
     "label=disable"
   ],
-  "mounts": [
-    "source=${localEnv:USERPROFILE}/Documents/Python Scripts/Entity/Entity - HA Integration/home-assistant-integration/custom_components,target=${containerWorkspaceFolder}/config/custom_components,type=bind"
-  ],
   "customizations": {
     "vscode": {
       "extensions": [
