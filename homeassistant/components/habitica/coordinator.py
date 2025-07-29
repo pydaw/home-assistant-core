@@ -23,7 +23,6 @@ from habiticalib import (
 )
 
 from homeassistant.config_entries import ConfigEntry
-from homeassistant.const import CONF_NAME
 from homeassistant.core import HomeAssistant
 from homeassistant.exceptions import (
     ConfigEntryAuthFailed,
@@ -52,10 +51,10 @@ type HabiticaConfigEntry = ConfigEntry[HabiticaDataUpdateCoordinator]
 class HabiticaDataUpdateCoordinator(DataUpdateCoordinator[HabiticaData]):
     """Habitica Data Update Coordinator."""
 
-    config_entry: ConfigEntry
+    config_entry: HabiticaConfigEntry
 
     def __init__(
-        self, hass: HomeAssistant, config_entry: ConfigEntry, habitica: Habitica
+        self, hass: HomeAssistant, config_entry: HabiticaConfigEntry, habitica: Habitica
     ) -> None:
         """Initialize the Habitica data coordinator."""
         super().__init__(
@@ -105,12 +104,6 @@ class HabiticaDataUpdateCoordinator(DataUpdateCoordinator[HabiticaData]):
                 translation_key="service_call_exception",
                 translation_placeholders={"reason": str(e)},
             ) from e
-
-        if not self.config_entry.data.get(CONF_NAME):
-            self.hass.config_entries.async_update_entry(
-                self.config_entry,
-                data={**self.config_entry.data, CONF_NAME: user.data.profile.name},
-            )
 
     async def _async_update_data(self) -> HabiticaData:
         try:
